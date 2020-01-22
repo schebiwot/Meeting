@@ -1,27 +1,51 @@
 
-.background{
+.background {
     background-image: url("../images/img2.jpg");
 
-  /* Location of the image */
-  /*background-image: url(images/background-photo.jpg);*/
+    /* Location of the image */
+    /*background-image: url(images/background-photo.jpg);*/
 
-  /* Background image is centered vertically and horizontally at all times */
-  background-position: center center;
+    /* Background image is centered vertically and horizontally at all times */
+    background-position: center center;
 
-  /* Background image doesn't tile */
-  background-repeat: no-repeat;
+    /* Background image doesn't tile */
+    background-repeat: no-repeat;
 
-  /* Background image is fixed in the viewport so that it doesn't move when
-     the content's height is greater than the image's height */
-  background-attachment: fixed;
+    /* Background image is fixed in the viewport so that it doesn't move when
+       the content's height is greater than the image's height */
+    background-attachment: fixed;
 
-  /* This is what makes the background image rescale based
-     on the container's size */
-  background-size: cover;
+    /* This is what makes the background image rescale based
+       on the container's size */
+    background-size: cover;
 
-  /* Set a background color that will be displayed
-     while the background image is loading */
-  background-color: #464646;
+    /* Set a background color that will be displayed
+       while the background image is loading */
+    background-color: #464646;
+}
+
+.background .heading {
+    color: #585353;
+    text-align: center;
+    padding-top: 200px;
+}
+
+.background p {
+    text-align: center;
+    padding: 20px 60px;
+}
+
+.background p .btn {
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+    padding: 10px;
+    font-size: 1.2em;
+}
+
+.background p .btn:hover {
+    color: #C57ED3;
+    border-color: #C57ED3;
 }
 
 
@@ -38,7 +62,8 @@
     background: #f8f9fa !important;
     bottom: 0;
     left: 0;
-    position: fixed;
+    position: sticky;
+    height: 60px;
     width: 100%;
 }
 
@@ -48,7 +73,6 @@ section .section-title {
     margin-bottom: 50px;
     text-transform: uppercase;
 }
-
 
 
 #footer h5 {
@@ -113,4 +137,30 @@ section .section-title {
     font-weight: 700;
 }
 
-
+.navbar {
+  background-color: transparent;
+  border: none;
+  color: grey;
+  z-index: 100;
+  transition: background-color 1s ease 0s;
+}
+.navbar-default .navbar-brand {
+	 margin-top: 10px;
+	 color: grey;
+}
+.navbar-light .navbar-nav .nav-link {
+    color: #ffffff;
+}
+.navbar.solid {
+	 background-color: #490d40;
+	 transition: background-color 1s ease 0s;
+	 box-shadow: 0 0 4px grey;
+}
+ .navbar.solid .navbar-brand {
+	 color: #c57ed3;
+	 transition: color 1s ease 0s;
+}
+ .navbar.solid .navbar-nav > li > a {
+	 color: #c57ed3;
+	 transition: color 1s ease 0s;
+}
