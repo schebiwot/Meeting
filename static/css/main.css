@@ -27,7 +27,7 @@
 .background .heading {
     color: #585353;
     text-align: center;
-    padding-top: 200px;
+    padding-top: 310px;
 }
 
 .background p {
@@ -38,13 +38,13 @@
 .background p .btn {
     background-color: transparent;
     color: white;
-    border: 1px solid white;
-    padding: 10px;
+    /*border: 1px solid white;*/
+    padding: 5px;
     font-size: 1.2em;
 }
 
 .background p .btn:hover {
-    color: #C57ED3;
+    color: #0A1B1B;
     border-color: #C57ED3;
 }
 

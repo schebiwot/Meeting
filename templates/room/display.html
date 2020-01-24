@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+{% block body %}
+    {% if rooms %}
+        <div class="container">
+            <div class="row">
+                {% for room in rooms %}
+                    <div class="col col-md-4">
+                        <a href="/display/{{room.id }}">
+                            <div class="card" style="width: 18rem;">
+                                {#                    <img src="{{product.image}}" class="card-img-top" alt="...">#}
+                                <div class="card-body">
+                                    Name:{{room.name}} <br>
+                                    Capacity:{{ room.capacity }} <br>
+                                    Location:{{ room.location }} <br>
+                                    Status: Availlable
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary" value="">Book room</button>
+                            </div>
+
+                        </a>
+
+
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+    {% else %}
+        <p>Rooms not available</p>
+    {% endif %}
+
+{% endblock body %}
+

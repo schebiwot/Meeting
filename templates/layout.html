@@ -2,46 +2,71 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>{{ title }}</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-            <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-datetimepicker.min.css') }}">
 
 </head>
+
 <body>
 <div id="page-container">
     <div id="content-wrap">
-        <nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;">
-            <a class="navbar-brand" href="#">Home</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <nav class="navbar navbar-expand-md navbar-light navbar-fixed-top">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+            <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+                <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="/room">New <span class="sr-only">(current)</span></a>
-                    </li><li class="nav-item">
-                        <a class="nav-link" href="#">schedule</a>
+                        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                            Rooms </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="/room/create">New <span class="sr-only">(current)</span></a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/room/display">view rooms</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                            Meetings </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="/meeting/schedule">Schedule <span
+                                    class="sr-only">(current)</span></a>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="mx-auto order-0">
+
+            </div>
+            <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/signup">Signup</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">view rooms</a>
+                        <a class="nav-link" href="/login">Login</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Pricing</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                    </li>
+
                 </ul>
             </div>
         </nav>
-{% block body%}
+        {% block body %}
 
-    {% endblock body %}
+        {% endblock body %}
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
                 integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
                 crossorigin="anonymous"></script>
@@ -51,39 +76,61 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
                 integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
                 crossorigin="anonymous"></script>
+        <script src="{{ url_for('static', filename='js/bootstrap-datetimepicker.min.js') }}"></script>
+
+        <script type="text/javascript">
+            $(function () {
+                $('#timefrom').datetimepicker({format: 'yyyy/mm/dd hh:ii'});
+            });
+            $(function () {
+                $('#timeto').datetimepicker({format: 'yyyy/mm/dd hh:ii'});
+            });
+            $(document).ready(function () {
+                // Transition effect for navbar
+                $(window).scroll(function () {
+                    // checks if window is scrolled more than 500px, adds/removes solid class
+                    if ($(this).scrollTop() > 500) {
+                        $('.navbar').addClass('solid');
+                    } else {
+                        $('.navbar').removeClass('solid');
+                    }
+                });
+            });
+        </script>
     </div>
 
 
-        <section id="footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-5">
-                        <ul class="list-unstyled list-inline social text-center">
-                            <li class="list-inline-item"><a href="javascript:void();"><i class="fa fa-facebook"></i></a>
-                            </li>
-                            <li class="list-inline-item"><a href="javascript:void();"><i class="fa fa-twitter"></i></a>
-                            </li>
-                            <li class="list-inline-item"><a href="javascript:void();"><i
-                                    class="fa fa-instagram"></i></a></li>
-                            <li class="list-inline-item"><a href="javascript:void();"><i class="fa fa-google-plus"></i></a>
-                            </li>
-                            <li class="list-inline-item"><a href="javascript:void();" target="_blank"><i
-                                    class="fa fa-envelope"></i></a></li>
-                        </ul>
-                    </div>
-                    </hr>
+    <section id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-5">
+                    <ul class="list-unstyled list-inline social text-center">
+                        <li class="list-inline-item"><a href="javascript:void();"><i class="fa fa-facebook"></i></a>
+                        </li>
+                        <li class="list-inline-item"><a href="javascript:void();"><i class="fa fa-twitter"></i></a>
+                        </li>
+                        <li class="list-inline-item"><a href="javascript:void();"><i
+                                class="fa fa-instagram"></i></a></li>
+                        <li class="list-inline-item"><a href="javascript:void();"><i class="fa fa-google-plus"></i></a>
+                        </li>
+                        <li class="list-inline-item"><a href="javascript:void();" target="_blank"><i
+                                class="fa fa-envelope"></i></a></li>
+                    </ul>
                 </div>
-                <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-center text-white">
-                        <p><u><a href="#">Meeting</a></u></p>
-                        <p class="h6" style="color: #7c7c7d">&copy All right Reversed.<a class="text-green ml-2"
-                                                                                         href="#" target="_blank">meetingroom</a>
-                        </p>
-                    </div>
-                    </hr>
-                </div>
+                </hr>
             </div>
-        </section>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-center text-white">
+                    <p><u><a href="#">Meeting</a></u></p>
+                    <p class="h6" style="color: #7c7c7d">&copy All right Reversed.<a class="text-green ml-2"
+                                                                                     href="#" target="_blank">meetingroom</a>
+                    </p>
+                </div>
+                </hr>
+            </div>
+        </div>
+    </section>
+
 </div>
 
 </body>

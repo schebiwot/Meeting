@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+{% block body%}
+
+{% if room %}
+<div class="row">
+<div class="card"  class="card text-white bg-dark mb-3" style="width: 40rem;" align="center">
+  <img class="card-img-top" src="" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">Room Details</h5>
+       <div class="card-body" >
+        Name:{{room.name}} </br>
+        Capacity:{{room.capacity}} </br>
+        Location:{{room.location}} </br>
+
+    </div>
+    <a href="/room/update/{{room.id}}" class="btn btn-primary">Update Details</a>
+  </div>
+</div>
+</div>
+
+{% else %}
+  <p>room not available</p>
+{% endif %}
+{% endblock body %}

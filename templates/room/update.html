@@ -1,10 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'layout.html' %}
+{% block body%}
+<div class="form">
+    <form action="/room/update/{{room.id}}/"  method="post" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div>
+                        <label for="">Name</label>
+                        <input type="hidden" value={{room.name}}>
+                        <input type="text" value={{room.name}} name="roomname" class="form-control"
+                               placeholder="Enter name">
+
+                    </div>
+                    <label for=""> Capacity</label>
+                    <input type="hidden" value={{room. capacity}}>
+                    <input type="number" value={{room. capacity}} name="roomcapacity" class="form-control"
+                           placeholder="Enter  capacity">
+                </div>
+                <div>
+                    <label for="">Location</label>
+                    <input type="hidden" value={{room.location}}>
+                    <input type="text" value={{room.location}} name="roomlocation" class="form-control"
+                           placeholder="Enter number">
+                </div>
+
+{#                <div>#}
+{#                    <label for="">Image</label>#}
+{#                    <input type="file" value={{room.image}}">#}
+{#                    <input type="text" value={{room.image}} name="roomimage" class="form-control"#}
+{#                           placeholder="Enter color">#}
+{##}
+{#                </div>#}
+
+
+
+
+                <div class="row">
+                    <a href="/room/delete/{{room.id}}" class="btn btn-danger">Delete</a>
+                    <input type="submit" class="btn btn-info" value="update room">
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </form>
+</div>
+{% endblock body %}
