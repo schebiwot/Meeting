@@ -16,10 +16,7 @@
                 <div class="form-group">
 
                     <label for="">Room:</label>
-                    <select name="meetingroom" class="form-control">
-                    {% for room in rooms %}
-                        <option value="{{ room.id }}">{{ room.name }}</option>
-                    {% endfor  %}
+                    <select name="meetingroom" id="meetingroom" class="form-control">
                     </select>
                 </div>
                 <div class="form-group">
@@ -38,4 +35,32 @@
 
     </form>
 </div>
+    <script type="text/javascript">
+$(function() {
+    $("#timeto").change(function() {
+        const time_from = $("#timefrom").val();
+        const time_to = $(this).val();
+
+        $.ajax(
+            {
+                url: `/lookup-rooms`,
+                type: "GET",
+                dataType: "json",
+                data: {
+                    time_from: time_from,
+                    time_to: time_to
+                }
+            }).done(function(data) {
+                $("#meetingroom").html("");// clear prepopulated rooms
+                for (let ndx = 0; ndx < data.rooms.length; ndx++) {//loop thru api/request/query results
+                    const item = data.rooms[ndx];
+                    const option = document.createElement("option");
+                    option.value = item["id"];
+                    option.text = item["name"];
+                    $("#meetingroom").append(option);
+                }
+            });
+    });
+});
+</script>
 {% endblock body %}

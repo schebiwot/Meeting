@@ -3,6 +3,11 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required, LoginManager, UserMixin
+from flask_marshmallow import Marshmallow
+from sqlalchemy import and_
+# from Marshmallow import Schema, fields, ValidationError, pre_load
+
+from flask import jsonify, make_response
 import os
 
 app = Flask(__name__)
@@ -12,9 +17,14 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'Top secret'
 
 db = SQLAlchemy(app)
+ma = Marshmallow(app)
 login_manager = LoginManager()
 login_manager.login_view = 'login'
 login_manager.init_app(app)
+
+
+def format_date(date_string):
+    return datetime.strptime(date_string, '%Y/%m/%d %H:%M').date()
 
 
 @app.route('/')
@@ -38,6 +48,16 @@ class Room(db.Model):
     booked = db.Column(db.Boolean, default=False)
     time_booked = db.Column(db.DateTime())
     meetings = db.relationship("Meeting")
+
+
+# serialize room table
+class RoomSchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'name', 'capacity', 'location',
+                  'booked', 'time_booked')
+
+        model = Room
+        # meetings = db.Nested('MeetingSchema', many=True, exclude=('Room',))
 
 
 class MyDateTime(db.TypeDecorator):
@@ -65,6 +85,9 @@ def create_room():
         name = request.form.get('roomname')
         capacity = request.form.get('roomcapacity')
         location = request.form.get('roomlocation')
+        # from_time
+        # for room in rooms:
+        #     for time in room:
 
         # create a room instance/object
         room = Room(name=name, capacity=capacity, location=location)
@@ -81,14 +104,28 @@ def create_room():
 @app.route('/room/display', methods=['GET', 'POST'])
 def get_rooms():
     rooms = Room.query.all()  # get all products from db
-    return render_template('room/display.html', rooms=rooms,title="Display")
+    return render_template('room/display.html', rooms=rooms, title="Display")
 
 
 @app.route('/display/<int:room_id>/')  # handling a single product
 def detail(room_id):
     # get a product with the above id
     room = Room.query.get(room_id)
-    return render_template('room/detail.html', room=room,title="Details")
+    return render_template('room/detail.html', room=room, title="Details")
+
+
+@app.route('/lookup-rooms', methods=['GET', 'POST'])
+def lookup_rooms():
+    time_from = request.args.get('time_from')
+    time_to = request.args.get('time_to')
+    rooms_list = Room.query \
+        .filter(~and_(Meeting.timefrom >= time_to, Meeting.timeto <= time_from)) \
+        .all()
+
+    rooms_schema = RoomSchema(many=True)
+
+    results = rooms_schema.dump(rooms_list, many=True)
+    return {"rooms": results, "time_from": time_from, "time_to": time_to}
 
 
 @app.route('/room/update/<int:room_id>/', methods=['GET', 'POST'])  # handling a single room
@@ -109,7 +146,7 @@ def update(room_id):
         # go back to the previous page
         return redirect('/room/update/{}/'.format(room_id))
 
-    return render_template('room/update.html', room=room ,title="RoomUpdate")
+    return render_template('room/update.html', room=room, title="RoomUpdate")
 
 
 @app.route('/room/delete/<int:room_id>/')
@@ -156,14 +193,12 @@ def signup():
 
         password = generate_password_hash(password)
 
-
-
-        user =User(name=name, username=username, email=email, password=password);
+        user = User(name=name, username=username, email=email, password=password);
 
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('login'))
-    return render_template('signup.html',title="SignUp")
+    return render_template('signup.html', title="SignUp")
 
 
 @login_manager.user_loader
@@ -190,4 +225,4 @@ def login():
 
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    app.run(port=3000, debug=True)
