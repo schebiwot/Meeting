@@ -1,13 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required, LoginManager, UserMixin
 from flask_marshmallow import Marshmallow
-from sqlalchemy import and_
-# from Marshmallow import Schema, fields, ValidationError, pre_load
-
-from flask import jsonify, make_response
 import os
 
 app = Flask(__name__)
@@ -15,6 +12,10 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///meeting.sqlite"  # path to database
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'Top secret'
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "File_Download_Upload/static/images"
+
+app.config['IMAGE_UPLOAD'] = "E:\class\Meeting\static\images"
 
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
@@ -25,6 +26,9 @@ login_manager.init_app(app)
 
 def format_date(date_string):
     return datetime.strptime(date_string, '%Y/%m/%d %H:%M').date()
+
+def format_hyphen_date(date_string):
+    return datetime.strptime(date_string, '%Y-%m-%d %H:%M').strftime('%Y-%m-%d %H:%M')
 
 
 @app.route('/')
@@ -45,6 +49,7 @@ class Room(db.Model):
     name = db.Column(db.String(100), nullable=False)
     capacity = db.Column(db.Integer, nullable=False)
     location = db.Column(db.String(100), nullable=True)
+    image = db.Column(db.String(100), nullable=True)
     booked = db.Column(db.Boolean, default=False)
     time_booked = db.Column(db.DateTime())
     meetings = db.relationship("Meeting")
@@ -57,7 +62,6 @@ class RoomSchema(ma.Schema):
                   'booked', 'time_booked')
 
         model = Room
-        # meetings = db.Nested('MeetingSchema', many=True, exclude=('Room',))
 
 
 class MyDateTime(db.TypeDecorator):
@@ -80,23 +84,30 @@ class Meeting(db.Model):
 
 @app.route('/room/create', methods=['GET', 'POST'])
 def create_room():
-    if request.form:
+    if request.form and request.files:
         # grab form data
         name = request.form.get('roomname')
         capacity = request.form.get('roomcapacity')
         location = request.form.get('roomlocation')
+
+        uploaded_image = request.files['roomimage']
+        filename = secure_filename(uploaded_image.filename)
+
+        # image upload
+        uploaded_image.sapve(os.path.join(app.config["IMAGE_UPLOAD"], filename))
+        image = "{}/{}".format("images", filename)
+ 
         # from_time
         # for room in rooms:
         #     for time in room:
 
         # create a room instance/object
-        room = Room(name=name, capacity=capacity, location=location)
+        room = Room(name=name, capacity=capacity, location=location, image=image)
 
         db.session.add(room)
         db.session.commit()
-        # flash('Room has been successfully added!', 'alert alert-success')
+        flash('Room has been successfully added!')
         return redirect(url_for('get_rooms'))  # after succesful upload
-        # room = Room(name=name, capacity=capacity, location=location)
 
     return render_template('room/create.html', title='Create')
 
@@ -118,14 +129,18 @@ def detail(room_id):
 def lookup_rooms():
     time_from = request.args.get('time_from')
     time_to = request.args.get('time_to')
-    rooms_list = Room.query \
-        .filter(~and_(Meeting.timefrom >= time_to, Meeting.timeto <= time_from)) \
-        .all()
+    time_from_param = '{}{}'.format(format_hyphen_date(time_from), ':00.000000')
+    time_to_param = '{}{}'.format(format_hyphen_date(time_to), ':00.000000')
+
+    rooms_list = db.engine.execute(
+        "select r.* from room r where r.id not in (select room_id from meeting m where m.timefrom "
+        "<= :time_from_param AND m.timeto >= :time_to_param);",
+        {'time_from_param': time_from_param, 'time_to_param': time_to_param})
 
     rooms_schema = RoomSchema(many=True)
 
     results = rooms_schema.dump(rooms_list, many=True)
-    return {"rooms": results, "time_from": time_from, "time_to": time_to}
+    return {"rooms": results, "time_from": time_from_param, "time_to": time_to_param}
 
 
 @app.route('/room/update/<int:room_id>/', methods=['GET', 'POST'])  # handling a single room
@@ -142,8 +157,7 @@ def update(room_id):
         room.location = location
 
         db.session.commit()
-        # flash('your room has been succes?sfully updated')
-        # go back to the previous page
+        flash('your room has been successfully updated')
         return redirect('/room/update/{}/'.format(room_id))
 
     return render_template('room/update.html', room=room, title="RoomUpdate")
@@ -162,22 +176,23 @@ def delete(room_id):
 @app.route('/meeting/schedule', methods=['GET', 'POST'])
 def schedule():
     if request.form:
-        # date = request.form.get('meetingdate')
         room_id = request.form.get('meetingroom')
         description = request.form.get('meetingdescription')
-        timefrom = request.form.get('timefrom')
-        timeto = request.form.get('timeto')
+        timefrom = request.form.get('startdate_datepicker')
+        timeto = request.form.get('enddate_datepicker')
+
+        time_from = format_hyphen_date(timefrom)
+        time_to = format_hyphen_date(timeto)
 
         # get room then room id
         room = Room.query.filter_by(id=room_id).first()
 
-        # create a Meeting instance/object
-        meeting = Meeting(room=room, description=description, room_id=room.id, timefrom=timefrom, timeto=timeto)
+        # create a Meeting object
+        meeting = Meeting(room=room, description=description, room_id=room.id, timefrom=time_from, timeto=time_to)
 
-        # #
         db.session.add(meeting)
         db.session.commit()
-        # flash('Meeting has been successfully added!', 'alert alert-success')
+        flash('Meeting has been successfully added!', 'alert alert-success')
         return redirect(url_for('schedule'))
     rooms_list = Room.query.all()
     return render_template('meeting/schedule.html', title='Schedule', rooms=rooms_list)
@@ -191,12 +206,16 @@ def signup():
         username = request.form.get('username')
         password = request.form.get('password')
 
-        password = generate_password_hash(password)
+        passwordHash = generate_password_hash(password)
 
-        user = User(name=name, username=username, email=email, password=password);
+        
+        user = User(name=name, username=username, email=email, password=passwordHash);
 
         db.session.add(user)
         db.session.commit()
+        # if not len(password) >= 8:
+        #     flash("password must be atleast 8 Characters in length")
+
         return redirect(url_for('login'))
     return render_template('signup.html', title="SignUp")
 
@@ -215,11 +234,11 @@ def login():
 
         user = User.query.filter_by(email=email).first()
 
-        if check_password_hash(password, password):
+        if check_password_hash(user.password, password):
             login_user(user)
-            # flash(u'You were successfully logged in', 'alert alert-success')
+            flash(u'You were successfully logged in', 'alert alert-success')
             return redirect(url_for('index'))
-        # flash(u'Your login credentials are not correct, try again or signup', 'alert alert-danger')
+        flash('Your login credentials are not correct, try again or signup', 'alert alert-danger')
         return redirect(url_for('login'))
     return render_template('login.html', title="Login")
 

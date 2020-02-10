@@ -122,30 +122,40 @@ section .section-title {
     font-weight: 700;
 }
 
-.navbar {
-  background-color: transparent;
-  border: none;
-  color: grey;
-  z-index: 100;
-  transition: background-color 1s ease 0s;
+.navbar{
+    background-color: transparent;
+    border: none;
+    color: grey;
+    z-index: 100;
+    transition: background-color 1s ease 0s;
 }
+
+
+.navbar-toggler-icon {
+    background-color: #0A1B1B;
+}
+
 .navbar-default .navbar-brand {
-	 margin-top: 10px;
-	 color: grey;
+    margin-top: 10px;
+    color: grey;
 }
+
 .navbar-light .navbar-nav .nav-link {
     color: #ffffff;
 }
+
 .navbar.solid {
-	 background-color: #490d40;
-	 transition: background-color 1s ease 0s;
-	 box-shadow: 0 0 4px grey;
+    background-color: #490d40;
+    transition: background-color 1s ease 0s;
+    box-shadow: 0 0 4px grey;
 }
- .navbar.solid .navbar-brand {
-	 color: #c57ed3;
-	 transition: color 1s ease 0s;
+
+.navbar.solid .navbar-brand {
+    color: #c57ed3;
+    transition: color 1s ease 0s;
 }
- .navbar.solid .navbar-nav > li > a {
-	 color: #c57ed3;
-	 transition: color 1s ease 0s;
+
+.navbar.solid .navbar-nav > li > a {
+    color: #c57ed3;
+    transition: color 1s ease 0s;
 }
