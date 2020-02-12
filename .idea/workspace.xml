@@ -2,20 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="19dc4783-c010-43dc-bdf3-311e5fd618c1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/meeting.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/meeting.sqlite" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/main.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/layout.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/layout.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/meeting/schedule.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/meeting/schedule.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/room/book.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/room/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/room/create.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/room/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/room/detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/room/display.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/room/display.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/room/update.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/room/update.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/signup.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/signup.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,6 +45,13 @@
         <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
         <item name="main: schema" type="981a47c2:SqliteImplModel$Schema" />
         <item name="meeting: table" type="3d80ac25:SqliteImplModel$Table" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="SQLite - meeting.sqlite" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="main: schema" type="981a47c2:SqliteImplModel$Schema" />
+        <item name="user: table" type="3d80ac25:SqliteImplModel$Table" />
       </path>
     </expand>
     <select />
@@ -135,7 +132,12 @@
               <path>
                 <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
                 <item name="root:SQLite - meeting.sqlite" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-                <item name="com.intellij.database.console.session.MessageBusSession@3f0d9ce5" type="9fbbdea:ServiceModel$ServiceNode" />
+                <item name="com.intellij.database.console.session.MessageBusSession@347a877b" type="9fbbdea:ServiceModel$ServiceNode" />
+              </path>
+              <path>
+                <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+                <item name="root:SQLite - meeting.sqlite" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+                <item name="com.intellij.database.console.session.MessageBusSession@1faf52f7" type="9fbbdea:ServiceModel$ServiceNode" />
               </path>
             </expand>
             <select />
@@ -172,6 +174,7 @@
       <workItem from="1581342991548" duration="1828000" />
       <workItem from="1581344962625" duration="1749000" />
       <workItem from="1581346906379" duration="637000" />
+      <workItem from="1581431959873" duration="5563000" />
     </task>
     <servers />
   </component>
@@ -239,10 +242,10 @@
       <screen x="0" y="0" width="1366" height="738" />
     </state>
     <state x="263" y="25" key="com.intellij.database.dbimport.ImportDialog/0.0.1366.738@0.0.1366.738" timestamp="1581343563793" />
-    <state x="379" y="194" key="com.intellij.ide.util.TipDialog" timestamp="1581346907983">
+    <state x="379" y="194" key="com.intellij.ide.util.TipDialog" timestamp="1581431974607">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state x="379" y="194" key="com.intellij.ide.util.TipDialog/0.0.1366.738@0.0.1366.738" timestamp="1581346907983" />
+    <state x="379" y="194" key="com.intellij.ide.util.TipDialog/0.0.1366.738@0.0.1366.738" timestamp="1581431974607" />
     <state x="379" y="101" width="607" height="536" key="find.popup" timestamp="1580376746525">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
@@ -262,22 +265,22 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app.py</url>
-          <line>83</line>
+          <line>107</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app.py</url>
-          <line>194</line>
+          <line>218</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app.py</url>
-          <line>125</line>
+          <line>149</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app.py</url>
-          <line>112</line>
+          <line>136</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>

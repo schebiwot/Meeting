@@ -6,12 +6,31 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required, LoginManager, UserMixin
 from flask_marshmallow import Marshmallow
 import os
+from flask_mail import Mail
 
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///meeting.sqlite"  # path to database
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'Top secret'
+app.config['TESTING'] = False
+# email configuration
+
+app.config['MAIL_SERVER']
+app.config['MAIL_PORT']
+app.config['MAIL_USE_TLS']
+app.config['MAIL_USE_SSL']
+app.config['MAIL_DEBUG'] = True
+app.config['MAIL_USERNAME']=''
+app.config['MAIL_PASSWORD'] = None
+app.config['MAIL_DEFAULT_SENDER'] = ' '
+app.config['MAIL_SUPPRESS_SENDER'] = False  # IF APP IS IN TESTING MODE,IT WONT SEND EMAILS TO RECEIPIENTS
+app.config['MAIL_MAX_EMAILS']
+app.config['MAIL_ASCII_ATTACHMENTS'] = False
+
+maiL = Mail(app)
+
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "File_Download_Upload/static/images"
 
@@ -26,6 +45,11 @@ login_manager.init_app(app)
 
 def format_date(date_string):
     return datetime.strptime(date_string, '%Y/%m/%d %H:%M').date()
+
+
+def format_slash_date(date_string):
+    return datetime.strptime(date_string, '%Y-%m-%d %H:%M').strftime('%Y/%m/%d %H:%M')
+
 
 def format_hyphen_date(date_string):
     return datetime.strptime(date_string, '%Y-%m-%d %H:%M').strftime('%Y-%m-%d %H:%M')
@@ -96,7 +120,7 @@ def create_room():
         # image upload
         uploaded_image.sapve(os.path.join(app.config["IMAGE_UPLOAD"], filename))
         image = "{}/{}".format("images", filename)
- 
+
         # from_time
         # for room in rooms:
         #     for time in room:
@@ -181,8 +205,8 @@ def schedule():
         timefrom = request.form.get('startdate_datepicker')
         timeto = request.form.get('enddate_datepicker')
 
-        time_from = format_hyphen_date(timefrom)
-        time_to = format_hyphen_date(timeto)
+        time_from = format_slash_date(timefrom)
+        time_to = format_slash_date(timeto)
 
         # get room then room id
         room = Room.query.filter_by(id=room_id).first()
@@ -204,11 +228,10 @@ def signup():
         name = request.form.get('name')
         email = request.form.get('email')
         username = request.form.get('username')
-        password = request.form.get('password')
+        password = schedule.form.get('password')
 
         passwordHash = generate_password_hash(password)
 
-        
         user = User(name=name, username=username, email=email, password=passwordHash);
 
         db.session.add(user)
@@ -241,6 +264,11 @@ def login():
         flash('Your login credentials are not correct, try again or signup', 'alert alert-danger')
         return redirect(url_for('login'))
     return render_template('login.html', title="Login")
+
+@app.route('/mail')
+def send_mail():
+    users= [fetch from db]
+    maiL.msg=
 
 
 if __name__ == '__main__':
