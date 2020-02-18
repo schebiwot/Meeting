@@ -1,34 +1,66 @@
+</html>{% extends 'authLayout.html' %}
+{% block body %}
+    <div id="auth">
+        <h3 class="text-center text-white pt-5"><i>@Meetingroom</i></h3>
+        <div class="container">
+            <div id="auth-row" class="row justify-content-center align-items-center">
+                <div id="auth-column" class="col-md-6">
+                    <div id="signup-box" class="col-md-12">
+                        <form id="auth-form" class="form" action="" method="post">
+                            <h3 class="text-center text-info">Sign Up</h3>
+                            <div class="form-group">
+                                <label for="" class="text-info">Name:</label><br>
+                                <input type="text" name="name" class="form-control" placeholder="Enter Name"></div>
+                             <div class="form-group">
+                                <label for="" class="text-info">Email Address:</label><br>
+                                <input type="email" name="email" class="form-control" placeholder="Enter email"></div>
+                             <div class="form-group">
+                                <label for="" class="text-info">Username:</label><br>
+                                <input type="text" name="username" class="form-control" placeholder="Enter username"></div>
+                            <div class="form-group">
+                                <label for="" class="text-info">Password:</label><br>
+                                <input type="password" name="password" class="form-control"
+                                       placeholder="Enter Password">
+                            </div>
+                            <div class="form-group">
 
-</html>{% extends 'base.html' %}
-{% block body%}
-<div class="form">
-    <form action="/signup/" method="post">
-        <div class="row">
-            <div class="col-md-3"></div>
-            <div class="col-md-6">
-                 <div class="form-group">
-                    <label for="">Name</label>
-                    <input type="text" name="name" class="form-control">
+                                <input type="submit" name="submit" class="btn btn-info btn-md" value="submit">
+                            </div>
+                        </form>
+                    </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="">Email address</label>
-                    <input type="email" name="email" class="form-control" aria-describedby="emailHelp">
-                    <small id="emailHelp" class="form-text text-muted">We'll never share your personal detail.</small>
-                </div>
-                <div class="form-group">
-                    <label for="">UserName</label>
-                    <input type="text" name="username" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="">Password</label>
-                    <input type="password" name="password" class="form-control">
-                </div>
-                <button type="submit" class="btn btn-primary">SignUp</button>
-
             </div>
-            <div class="col-md-3"></div>
         </div>
-    </form>
-</div>
+    </div>
+
+    {#<div class="form">#}
+    {#    <form action="/signup/" method="post">#}
+    {#        <div class="row">#}
+    {#            <div class="col-md-3"></div>#}
+    {#            <div class="col-md-6">#}
+    {#                 <div class="form-group">#}
+    {#                    <label for="">Name</label>#}
+    {#                    <input type="text" name="name" class="form-control">#}
+    {#                </div>#}
+    {##}
+    {#                <div class="form-group">#}
+    {#                    <label for="">Email address</label>#}
+    {#                    <input type="email" name="email" class="form-control" aria-describedby="emailHelp">#}
+    {#                    <small id="emailHelp" class="form-text text-muted">We'll never share your personal detail.</small>#}
+    {#                </div>#}
+    {#                <div class="form-group">#}
+    {#                    <label for="">UserName</label>#}
+    {#                    <input type="text" name="username" class="form-control">#}
+    {#                </div>#}
+    {#                <div class="form-group">#}
+    {#                    <label for="">Password</label>#}
+    {#                    <input type="password" name="password" class="form-control">#}
+    {#                </div>#}
+    {#                <button type="submit" class="btn btn-primary">SignUp</button>#}
+    {##}
+    {#            </div>#}
+    {#            <div class="col-md-3"></div>#}
+    {#        </div>#}
+    {#    </form>#}
+    {#</div>#}
 {% endblock body %}

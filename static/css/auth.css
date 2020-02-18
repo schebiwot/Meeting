@@ -1,0 +1,31 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #8c8c8c;
+  height: 100vh;
+}
+#auth .container #auth-row #auth-column #login-box {
+  margin-top: 120px;
+  max-width: 600px;
+  height: 320px;
+  border: 1px solid #9C9C9C;
+  background-color: #19302d;
+}
+#auth .container  #signup-box{
+margin-top: 120px;
+  max-width: 600px;
+  height: 500px;
+  border: 1px solid #9C9C9C;
+  background-color: #19302d;
+
+}
+.text-info {
+    color: #fafafa !important;
+}
+#auth .container #auth-row #auth-column #login-box #signup-box #auth-form {
+  padding: 20px;
+    color:white;
+}
+#auth .container #auth-row #auth-column #login-box #auth-form #signup-box #register-link {
+  margin-top: -85px;
+}

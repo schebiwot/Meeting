@@ -8,129 +8,143 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-datetimepicker.css') }}">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css"/>
 
 </head>
 <style>
-    .navbar{
+    .navbar {
         background-color: #7c7c7d;
     }
 </style>
 
 <body>
-        <nav class="navbar navbar-expand-lg navbar-dark ">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
-                    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+<nav class="navbar navbar-expand-lg navbar-dark ">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-            <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2" id="navbarNavDropdown">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                           data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
-                            Rooms </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="/room/create">New <span class="sr-only">(current)</span></a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="/room/display">view rooms</a>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                           data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
-                            Meetings </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="/meeting/schedule">Schedule <span
-                                    class="sr-only">(current)</span></a>
-                        </div>
-                    </li>
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2" id="navbarNavDropdown">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                   data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    Rooms </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/room/create">New <span class="sr-only">(current)</span></a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/room/display">view rooms</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                   data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    Meetings </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/meeting/schedule">Schedule <span
+                            class="sr-only">(current)</span></a>
+                </div>
+            </li>
 
-                </ul>
-            </div>
-            <div class="mx-auto order-0">
-
-            </div>
-            <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/signup">Signup</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/login">Login</a>
-                    </li>
-
-                </ul>
-            </div>
-        </nav>
-          {% with messages = get_flashed_messages() %}
-        {% if messages %}
-
-                {% for message in messages %}
-                    <h3>{{ message }}</h3>
-                {% endfor %}
-
-        {% endif %}
-    {% endwith %}
-        <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/bootstrap-datetimepicker.min.js') }}"></script>
-
-        {% block body %}
-
-        {% endblock body %}
-
-        <script type="text/javascript">
-            $(document).ready(function () {
-                // Transition effect for navbar
-                $(window).scroll(function () {
-                    // checks if window is scrolled more than 500px, adds/removes solid class
-                    if ($(this).scrollTop() > 500) {
-                        $('.navbar').addClass('solid');
-                    } else {
-                        $('.navbar').removeClass('solid');
-                    }
-                });
-            });
-        </script>
+        </ul>
     </div>
+    <div class="mx-auto order-0">
+
+    </div>
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ml-auto">
+            {% if current_user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#"> <span>Hi, {{current_user.name}}! </span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Logout</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/signup">Signup</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+            {% endif %}
+
+        </ul>
+    </div>
+</nav>
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+
+        {% for message in messages %}
+            <h3>{{ message }}</h3>
+        {% endfor %}
+
+    {% endif %}
+{% endwith %}
+<script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap-datetimepicker.min.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 
 
-    <section id="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-5">
-                    <ul class="list-unstyled list-inline social text-center">
-                        <li class="list-inline-item"><a href="javascript:void();"><i class="fa fa-facebook"></i></a>
-                        </li>
-                        <li class="list-inline-item"><a href="javascript:void();"><i class="fa fa-twitter"></i></a>
-                        </li>
-                        <li class="list-inline-item"><a href="javascript:void();"><i
-                                class="fa fa-instagram"></i></a></li>
-                        <li class="list-inline-item"><a href="javascript:void();"><i class="fa fa-google-plus"></i></a>
-                        </li>
-                        <li class="list-inline-item"><a href="javascript:void();" target="_blank"><i
-                                class="fa fa-envelope"></i></a></li>
-                    </ul>
-                </div>
-                </hr>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-center text-white">
-                    <p><u><a href="#">Meeting</a></u></p>
-                    <p class="h6" style="color: #7c7c7d">&copy All right Reversed.<a class="text-green ml-2"
-                                                                                     href="#" target="_blank">meetingroom</a>
-                    </p>
-                </div>
-                </hr>
-            </div>
+{% block body %}
+
+{% endblock body %}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Transition effect for navbar
+        $(window).scroll(function () {
+            // checks if window is scrolled more than 500px, adds/removes solid class
+            if ($(this).scrollTop() > 500) {
+                $('.navbar').addClass('solid');
+            } else {
+                $('.navbar').removeClass('solid');
+            }
+        });
+    });
+</script>
+</div>
+
+
+{#<section id="footer">#}
+<div class="footer-container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-5">
+            <ul class="list-unstyled list-inline social text-center">
+                <li class="list-inline-item"><a href="javascript:void();"><i class="fa fa-facebook"></i></a>
+                </li>
+                <li class="list-inline-item"><a href="javascript:void();"><i class="fa fa-twitter"></i></a>
+                </li>
+                <li class="list-inline-item"><a href="javascript:void();"><i
+                        class="fa fa-instagram"></i></a></li>
+                <li class="list-inline-item"><a href="javascript:void();"><i class="fa fa-google-plus"></i></a>
+                </li>
+                <li class="list-inline-item"><a href="javascript:void();" target="_blank"><i
+                        class="fa fa-envelope"></i></a></li>
+            </ul>
         </div>
-    </section>
+        </hr>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-center text-white">
+            <p><u><a href="#">Meeting</a></u></p>
+            <p class="h6" style="color: #7c7c7d">&copy All right Reversed.<a class="text-green ml-2" href="#"
+                                                                             target="_blank">meetingroom</a>
+            </p>
+        </div>
+        </hr>
+    </div>
+</div>
+
+{#</section>#}
 
 </div>
 

@@ -6,31 +6,30 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required, LoginManager, UserMixin
 from flask_marshmallow import Marshmallow
 import os
-from flask_mail import Mail
+from flask_mail import Mail, Message
 
 app = Flask(__name__)
 
+
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///meeting.sqlite"  # path to database
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'Top secret'
+app.config['SECRET_KEY'] = 'Top Secret'
+
 app.config['TESTING'] = False
+
 # email configuration
 
-app.config['MAIL_SERVER']
-app.config['MAIL_PORT']
-app.config['MAIL_USE_TLS']
-app.config['MAIL_USE_SSL']
+app.config['MAIL_SERVER'] = 'smtp.mailtrap.io'
+app.config['MAIL_PORT'] = 2525
+app.config['MAIL_USERNAME'] = '67047c3e7f5964'
+app.config['MAIL_PASSWORD'] = 'f651cea5353f8c'
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
 app.config['MAIL_DEBUG'] = True
-app.config['MAIL_USERNAME']=''
-app.config['MAIL_PASSWORD'] = None
-app.config['MAIL_DEFAULT_SENDER'] = ' '
 app.config['MAIL_SUPPRESS_SENDER'] = False  # IF APP IS IN TESTING MODE,IT WONT SEND EMAILS TO RECEIPIENTS
-app.config['MAIL_MAX_EMAILS']
 app.config['MAIL_ASCII_ATTACHMENTS'] = False
 
-maiL = Mail(app)
-
-
+mail = Mail(app)
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "File_Download_Upload/static/images"
 
@@ -38,9 +37,10 @@ app.config['IMAGE_UPLOAD'] = "E:\class\Meeting\static\images"
 
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
+
 login_manager = LoginManager()
-login_manager.login_view = 'login'
 login_manager.init_app(app)
+login_manager.login_view = 'login'
 
 
 def format_date(date_string):
@@ -107,6 +107,7 @@ class Meeting(db.Model):
 
 
 @app.route('/room/create', methods=['GET', 'POST'])
+@login_required
 def create_room():
     if request.form and request.files:
         # grab form data
@@ -118,14 +119,9 @@ def create_room():
         filename = secure_filename(uploaded_image.filename)
 
         # image upload
-        uploaded_image.sapve(os.path.join(app.config["IMAGE_UPLOAD"], filename))
+        uploaded_image.save(os.path.join(app.config["IMAGE_UPLOAD"], filename))
         image = "{}/{}".format("images", filename)
 
-        # from_time
-        # for room in rooms:
-        #     for time in room:
-
-        # create a room instance/object
         room = Room(name=name, capacity=capacity, location=location, image=image)
 
         db.session.add(room)
@@ -137,12 +133,14 @@ def create_room():
 
 
 @app.route('/room/display', methods=['GET', 'POST'])
+@login_required
 def get_rooms():
     rooms = Room.query.all()  # get all products from db
     return render_template('room/display.html', rooms=rooms, title="Display")
 
 
 @app.route('/display/<int:room_id>/')  # handling a single product
+@login_required
 def detail(room_id):
     # get a product with the above id
     room = Room.query.get(room_id)
@@ -197,13 +195,16 @@ def delete(room_id):
     return redirect('/room/display')
 
 
+
 @app.route('/meeting/schedule', methods=['GET', 'POST'])
+@login_required
 def schedule():
     if request.form:
         room_id = request.form.get('meetingroom')
         description = request.form.get('meetingdescription')
         timefrom = request.form.get('startdate_datepicker')
         timeto = request.form.get('enddate_datepicker')
+        invites = request.form.getlist('invites[]')
 
         time_from = format_slash_date(timefrom)
         time_to = format_slash_date(timeto)
@@ -216,10 +217,13 @@ def schedule():
 
         db.session.add(meeting)
         db.session.commit()
-        flash('Meeting has been successfully added!', 'alert alert-success')
+        send_mail(invites, time_from, time_to, room.name)
+        flash('Meeting Scheduled!')
         return redirect(url_for('schedule'))
     rooms_list = Room.query.all()
-    return render_template('meeting/schedule.html', title='Schedule', rooms=rooms_list)
+    user_list = User.query.all()
+
+    return render_template('meeting/schedule.html', title='Schedule', rooms=rooms_list, users=user_list)
 
 
 @app.route('/signup/', methods=['GET', 'POST'])
@@ -228,11 +232,11 @@ def signup():
         name = request.form.get('name')
         email = request.form.get('email')
         username = request.form.get('username')
-        password = schedule.form.get('password')
+        password = request.form.get('password')
 
         passwordHash = generate_password_hash(password)
 
-        user = User(name=name, username=username, email=email, password=passwordHash);
+        user = User(name=name, username=username, email=email, password=passwordHash)
 
         db.session.add(user)
         db.session.commit()
@@ -246,29 +250,44 @@ def signup():
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+    # return SessionUser.find_by_session_id(user_id)
 
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
     if request.form:
 
-        email = request.form.get('email')
         password = request.form.get('password')
+        email = request.form.get('email')
 
         user = User.query.filter_by(email=email).first()
 
-        if check_password_hash(user.password, password):
+        if user and check_password_hash(user.password, password):
             login_user(user)
-            flash(u'You were successfully logged in', 'alert alert-success')
+            # flash('You were successfully logged in', 'alert alert-success')
             return redirect(url_for('index'))
-        flash('Your login credentials are not correct, try again or signup', 'alert alert-danger')
+        flash('Your login credentials are not correct, try again or signup')
         return redirect(url_for('login'))
     return render_template('login.html', title="Login")
 
-@app.route('/mail')
-def send_mail():
-    users= [fetch from db]
-    maiL.msg=
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
+
+def send_mail(recipients, timeform, timeto, room_name):
+    with mail.connect() as conn:
+        msg = Message("Meetindroom schedule",
+                      sender="pythonflask@mail.com",
+                      recipients=recipients)
+        msg.body = 'Hello,\nYou are invited to a meeting to be held at :'+ room_name +' ''' \
+                   ' from  ' + timeform + ' to  ' + timeto + '@Meetingroom  '\
+
+        conn.send(msg)
+        return 'message set'
 
 
 if __name__ == '__main__':

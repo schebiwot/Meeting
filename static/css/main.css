@@ -9,7 +9,7 @@
 }
 
 .background .heading {
-    color: #585353;
+    color: #ae3f15;
     text-align: center;
     padding-top: 310px;
     height: 20;
@@ -22,8 +22,8 @@
 
 .background p .btn {
     background-color: transparent;
-    color: white;
-    /*border: 1px solid white;*/
+    color: #ae3f15;
+    border: 1px solid #ae3f15;
     padding: 5px;
     font-size: 1.2em;
 }
@@ -33,99 +33,14 @@
     border-color: #C57ED3;
 }
 
+.footer-container a {
+    color: #808080;
 
-/*.page-container {*/
-/*    position: relative;*/
-/*    min-height: 100vh;*/
-/*}*/
-
-/*.content-wrap {*/
-/*    padding-bottom: 2.5rem;*/
-/*}*/
-
-#footer {
-    background: #f8f9fa !important;
-    bottom: 0;
-    left: 0;
-    position: sticky;
-    height: 60px;
-    width: 100%;
 }
-
-section .section-title {
-    text-align: center;
-    color: #c1c1c1;
-    margin-bottom: 50px;
-    text-transform: uppercase;
-}
-
-
-#footer h5 {
-    padding-left: 10px;
-    border-left: 3px solid #eeeeee;
-    padding-bottom: 6px;
-    margin-bottom: 20px;
-    color: #7c7c7d;
-}
-
-#footer a {
-    color: #7c7c7d;
-    text-decoration: none !important;
-    background-color: transparent;
-    -webkit-text-decoration-skip: objects;
-}
-
-#footer ul.social li {
-    padding: 3px 0;
-}
-
-#footer ul.social li a i {
-    margin-right: 5px;
-    font-size: 25px;
-    -webkit-transition: .5s all ease;
-    -moz-transition: .5s all ease;
-    transition: .5s all ease;
-}
-
-#footer ul.social li:hover a i {
-    font-size: 30px;
-    margin-top: -10px;
-}
-
-#footer ul.social li a,
-#footer ul.quick-links li a {
-    color: #7c7c7d;
-}
-
-#footer ul.social li a:hover {
-    color: #eeeeee;
-}
-
-#footer ul.quick-links li {
-    padding: 3px 0;
-    -webkit-transition: .5s all ease;
-    -moz-transition: .5s all ease;
-    transition: .5s all ease;
-}
-
-#footer ul.quick-links li:hover {
-    padding: 3px 0;
-    margin-left: 5px;
-    font-weight: 700;
-}
-
-#footer ul.quick-links li a i {
-    margin-right: 5px;
-}
-
-#footer ul.quick-links li:hover a i {
-    font-weight: 700;
-}
-
-.navbar{
+.navbar {
     background-color: transparent;
     border: none;
-    color: grey;
+    color: #808080;
     z-index: 100;
     transition: background-color 1s ease 0s;
 }
