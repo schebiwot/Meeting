@@ -12,7 +12,6 @@
     color: #ae3f15;
     text-align: center;
     padding-top: 310px;
-    height: 20;
 }
 
 .background p {
@@ -47,8 +46,9 @@
 
 
 .navbar-toggler-icon {
-    background-color: #0A1B1B;
+    background-color: #d4ebeb;
 }
+
 
 .navbar-default .navbar-brand {
     margin-top: 10px;
@@ -56,7 +56,7 @@
 }
 
 .navbar-light .navbar-nav .nav-link {
-    color: #ffffff;
+    color: #886969;
 }
 
 .navbar.solid {
